@@ -22,7 +22,7 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
-        uses: hashicorp/terraform-github-actions@vmaster
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           tf_actions_version: 1.9.5
           tf_actions_subcommand: "init"
@@ -31,7 +31,7 @@ jobs:
 
       # Plan the changes to apply to the infrastructure
       - name: Terraform Plan
-        uses: hashicorp/terraform-github-actions@vmaster
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           tf_actions_version: 1.9.5
           tf_actions_subcommand: "plan"
@@ -40,7 +40,7 @@ jobs:
 
       # Apply the changes required to reach the desired state of the configuration
       - name: Terraform apply
-        uses: hashicorp/terraform-github-actions@vmaster 
+        uses: aws-actions/configure-aws-credentials@v2 
         with:
           tf_actions_version: 1.9.5
           tf_actions_subcommand: "apply"
