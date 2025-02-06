@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 
- jobs:
+jobs:
   terraform:
     name: 'Terraform'
     env: 
@@ -15,35 +15,35 @@ on:
     runs-on: ubuntu-latest
     environment: production
 
-      steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v4
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-    uses: hashicorp/terraform-github-actions@vmaster
-    with:
-      tf_actions_version: 0.14.7
-      tf_actions_subcommand: "init"
-      tf_actions_working_dir: "."
-      tf_actions_comment: "true"
+      - name: Terraform Init
+        uses: hashicorp/terraform-github-actions@vmaster
+        with:
+          tf_actions_version: 0.14.7
+          tf_actions_subcommand: "init"
+          tf_actions_working_dir: "."
+          tf_actions_comment: "true"
 
-    # Plan the changes to apply to the infrastructure
-    - name: Terraform Plan
-    uses: hashicorp/terraform-github-actions@vmaster
-    with:
-      tf_actions_version: 0.14.7
-      tf_actions_subcommand: "plan"
-      tf_actions_working_dir: "."
-      tf_actions_comment: "true"
+      # Plan the changes to apply to the infrastructure
+      - name: Terraform Plan
+        uses: hashicorp/terraform-github-actions@vmaster
+        with:
+          tf_actions_version: 0.14.7
+          tf_actions_subcommand: "plan"
+          tf_actions_working_dir: "."
+          tf_actions_comment: "true"
 
-    # Apply the changes required to reach the desired state of the configuration
-    - name: Terraform apply
-      uses: hashicorp/terraform-github-actions@vmaster 
-      with:
-        tf_actions_version: 0.14.7
-        tf_actions_subcommand: "apply"
-        tf_actions_working_dir: "."
-        tf_actions_comment: "true"
-        tf_actions_auto_approve: "true" 
+      # Apply the changes required to reach the desired state of the configuration
+      - name: Terraform apply
+        uses: hashicorp/terraform-github-actions@vmaster 
+        with:
+          tf_actions_version: 0.14.7
+          tf_actions_subcommand: "apply"
+          tf_actions_working_dir: "."
+          tf_actions_comment: "true"
+          tf_actions_auto_approve: "true" 
