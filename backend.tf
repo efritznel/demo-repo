@@ -4,7 +4,6 @@ terraform {
     key    = "github-actions-demo.tfstate"
     region = "us-east-1"
     encrypt = true
-    lock_enabled = true
   }
 }
 
