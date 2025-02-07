@@ -94,8 +94,13 @@ resource "aws_route_table" "public" {
 # Arguments:
 #   subnet_id: The ID of the subnet to associate with the route table.
 #   route_table_id: The ID of the route table to associate with the subnet.
-resource "aws_route_table_association" "public" {
-    subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "publica" {
+    subnet_id      = aws_subnet.publica.id
+    route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "publicb" {
+    subnet_id      = aws_subnet.publicb.id
     route_table_id = aws_route_table.public.id
 }
 
