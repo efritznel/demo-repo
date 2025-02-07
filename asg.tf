@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "demo-asg" {
   min_size = 1
   max_size = 2
   desired_capacity = 1
-  vpc_zone_identifier = [aws_subnet.public.id]
+  vpc_zone_identifier = [aws_subnet.publica.id]
   target_group_arns = [aws_lb_target_group.app.arn]
   health_check_type = "ELB"
   health_check_grace_period = 300

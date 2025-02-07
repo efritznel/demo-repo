@@ -11,7 +11,7 @@
 resource "aws_instance" "demo-ec2" {
   ami           = "ami-03d49b144f3ee2dc4"
   instance_type = "t2.micro"
-    subnet_id     = aws_subnet.public.id
+    subnet_id     = aws_subnet.publica.id
     key_name="demo-key"
     tags = {
         Name = "web-server"
