@@ -15,11 +15,21 @@ resource "aws_vpc" "main" {
 #   cidr_block: The CIDR block for the subnet.
 #   tags: A map of tags to assign to the subnet.
 # 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "publica" {
     vpc_id     = aws_vpc.main.id
     cidr_block = "11.0.1.0/24"
+    availability_zone = "us-east-1a"
     tags = {
-        Name = "public-subnet"
+        Name = "publica-subnet"
+    }
+}
+
+resource "aws_subnet" "publicb" {
+    vpc_id     = aws_vpc.main.id
+    cidr_block = "11.0.3.0/24"
+    availability_zone = "us-east-1b"
+    tags = {
+        Name = "publicb-subnet"
     }
 }
 
@@ -27,11 +37,21 @@ resource "aws_subnet" "public" {
 # - `vpc_id`: The ID of the VPC where the subnet will be created.
 # - `cidr_block`: The CIDR block for the subnet.
 # - `tags`: A map of tags to assign to the subnet, in this case, naming it "private-subnet".
-resource "aws_subnet" "private" {
+resource "aws_subnet" "privatea" {
     vpc_id     = aws_vpc.main.id
     cidr_block = "11.0.2.0/24"
+    availability_zone = "us-east-1a"
     tags = {
-        Name = "private-subnet"
+        Name = "privatea-subnet"
+    }
+}
+
+resource "aws_subnet" "privateb" {
+    vpc_id     = aws_vpc.main.id
+    cidr_block = "11.0.4.0/24"
+    availability_zone = "us-east-1b"
+    tags = {
+        Name = "privateb-subnet"
     }
 }
 
