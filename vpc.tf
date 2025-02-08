@@ -9,15 +9,27 @@ resource "aws_vpc" "my_vpc" {
   }
 }
 
-# Create Subnet
-resource "aws_subnet" "my_subnet" {
+# Create Subnet A
+resource "aws_subnet" "my_subneta" {
   vpc_id            = aws_vpc.my_vpc.id
   cidr_block        = "10.0.1.0/24"
   map_public_ip_on_launch = true
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "MySubnet"
+    Name = "MySubneta"
+  }
+}
+
+# Create Subnet B
+resource "aws_subnet" "my_subnetb" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  map_public_ip_on_launch = true
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "MySubnetb"
   }
 }
 
@@ -44,8 +56,13 @@ resource "aws_route_table" "my_route_table" {
   }
 }
 
-resource "aws_route_table_association" "my_rta" {
-  subnet_id      = aws_subnet.my_subnet.id
+resource "aws_route_table_association" "my_rta_subneta" {
+  subnet_id      = aws_subnet.my_subneta.id
+  route_table_id = aws_route_table.my_route_table.id
+}
+
+resource "aws_route_table_association" "my_rta_subnetb" {
+  subnet_id      = aws_subnet.my_subnetb.id
   route_table_id = aws_route_table.my_route_table.id
 }
 
