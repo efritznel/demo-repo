@@ -1,7 +1,7 @@
 # Create Launch Template
 resource "aws_launch_template" "my_template" {
   name_prefix   = "my-template"
-  image_id      = "ami-03d49b144f3ee2dc4"  # Replace with latest Amazon Linux AMI
+  image_id      = "ami-085ad6ae776d8f09c"  # Replace with latest Amazon Linux AMI
   instance_type = "t2.micro"
   key_name      = "demo-key"  # Replace with your key pair name
 
