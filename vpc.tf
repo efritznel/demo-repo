@@ -1,4 +1,8 @@
-# Create VPC
+# This resource block defines an AWS VPC (Virtual Private Cloud) with the following properties:
+# - `cidr_block`: The CIDR block for the VPC, set to "10.0.0.0/16".
+# - `enable_dns_support`: Enables DNS resolution for the VPC, set to true.
+# - `enable_dns_hostnames`: Enables DNS hostnames for instances within the VPC, set to true.
+# - `tags`: A map of tags to assign to the VPC, with a single tag "Name" set to "MyVPC".
 resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_support = true

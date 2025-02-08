@@ -3,7 +3,7 @@ resource "aws_lb" "my_lb" {
   name               = "my-load-balancer"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.my_sg.id]
+  security_groups    = [aws_security_group.lb_sg.id]
   subnets           = [aws_subnet.my_subneta.id, aws_subnet.my_subnetb.id]
 
   tags = {

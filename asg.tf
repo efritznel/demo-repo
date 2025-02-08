@@ -7,12 +7,12 @@ resource "aws_launch_template" "my_template" {
 
   network_interfaces {
     associate_public_ip_address = true
-    security_groups             = [aws_security_group.my_sg.id]
+    security_groups             = [aws_security_group.instance_sg.id]
   }
 
   user_data = base64encode(<<-EOF
               #!/bin/bash
-              echo "Hello, World!" > /var/www/html/index.html
+              echo "Projetct: How to deploy a High Availability web application on AWS!" > /var/www/html/index.html
               sudo yum install -y httpd
               sudo systemctl start httpd
               sudo systemctl enable httpd
@@ -32,6 +32,14 @@ resource "aws_launch_template" "my_template" {
     }
 }
 
+# This Terraform configuration creates an AWS Auto Scaling Group (ASG) with the following properties:
+# - desired_capacity: The initial number of instances in the ASG.
+# - min_size: The minimum number of instances in the ASG.
+# - max_size: The maximum number of instances in the ASG.
+# - vpc_zone_identifier: A list of subnet IDs where the ASG will launch instances.
+# - launch_template: Specifies the launch template to use for the instances, including the template ID and version.
+# - target_group_arns: A list of target group ARNs to associate with the ASG.
+# - tag: A tag to apply to the instances launched by the ASG, with the key "Name" and value "ASG-Instance", propagated at launch.
 # Create Auto Scaling Group
 resource "aws_autoscaling_group" "my_asg" {
   desired_capacity     = 1
