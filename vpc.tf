@@ -1,108 +1,83 @@
-# This resource block defines an AWS VPC (Virtual Private Cloud) named "main".
-# The VPC has a CIDR block of 11.0.0.0/16, which specifies the IP address range for the VPC.
-# The VPC is tagged with the name "demo-vpc" for identification purposes.
-resource "aws_vpc" "main" {
-  cidr_block = "11.0.0.0/16"
+# Create VPC
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_support = true
+  enable_dns_hostnames = true
+
   tags = {
-    Name = "demo-vpc"
+    Name = "MyVPC"
   }
 }
 
-# Creates a public subnet within the specified VPC.
-# 
-# Arguments:
-#   vpc_id: The ID of the VPC where the subnet will be created.
-#   cidr_block: The CIDR block for the subnet.
-#   tags: A map of tags to assign to the subnet.
-# 
-resource "aws_subnet" "publica" {
-    vpc_id     = aws_vpc.main.id
-    cidr_block = "11.0.1.0/24"
-    availability_zone = "us-east-1a"
-    tags = {
-        Name = "publica-subnet"
-    }
+# Create Subnet
+resource "aws_subnet" "my_subnet" {
+  vpc_id            = aws_vpc.my_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "MySubnet"
+  }
 }
 
-resource "aws_subnet" "publicb" {
-    vpc_id     = aws_vpc.main.id
-    cidr_block = "11.0.3.0/24"
-    availability_zone = "us-east-1b"
-    tags = {
-        Name = "publicb-subnet"
-    }
+# Create Internet Gateway
+resource "aws_internet_gateway" "my_igw" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  tags = {
+    Name = "MyInternetGateway"
+  }
 }
 
-# This resource block defines a private subnet within a specified VPC.
-# - `vpc_id`: The ID of the VPC where the subnet will be created.
-# - `cidr_block`: The CIDR block for the subnet.
-# - `tags`: A map of tags to assign to the subnet, in this case, naming it "private-subnet".
-resource "aws_subnet" "privatea" {
-    vpc_id     = aws_vpc.main.id
-    cidr_block = "11.0.2.0/24"
-    availability_zone = "us-east-1a"
-    tags = {
-        Name = "privatea-subnet"
-    }
+# Create Route Table and Route
+resource "aws_route_table" "my_route_table" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my_igw.id
+  }
+
+  tags = {
+    Name = "MyRouteTable"
+  }
 }
 
-resource "aws_subnet" "privateb" {
-    vpc_id     = aws_vpc.main.id
-    cidr_block = "11.0.4.0/24"
-    availability_zone = "us-east-1b"
-    tags = {
-        Name = "privateb-subnet"
-    }
+resource "aws_route_table_association" "my_rta" {
+  subnet_id      = aws_subnet.my_subnet.id
+  route_table_id = aws_route_table.my_route_table.id
 }
 
-# Creates an AWS Internet Gateway and attaches it to the specified VPC.
-# 
-# Arguments:
-#   vpc_id - The ID of the VPC to which the Internet Gateway will be attached.
-#   tags - A map of tags to assign to the resource. In this case, it assigns the tag "Name" with the value "demo-gw".
-resource "aws_internet_gateway" "gw" {
-    vpc_id = aws_vpc.main.id
-    tags = {
-        Name = "demo-gw"
-    }
+# Create Security Group
+resource "aws_security_group" "my_sg" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  # Allow HTTP traffic
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow SSH traffic
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "MySecurityGroup"
+  }
 }
-
-# Creates a public route table for the specified VPC.
-# 
-# Arguments:
-#   vpc_id: The ID of the VPC where the route table will be created.
-# 
-# Route:
-#   cidr_block: The destination CIDR block for the route.
-#   gateway_id: The ID of the internet gateway to route traffic to.
-# 
-# Tags:
-#   Name: A name tag for the route table.
-resource "aws_route_table" "public" {
-    vpc_id = aws_vpc.main.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.gw.id
-    }
-    tags = {
-        Name = "public-route-table"
-    }   
-}
-
-# Associates a subnet with a route table to define the routing rules for the subnet.
-# 
-# Arguments:
-#   subnet_id: The ID of the subnet to associate with the route table.
-#   route_table_id: The ID of the route table to associate with the subnet.
-resource "aws_route_table_association" "publica" {
-    subnet_id      = aws_subnet.publica.id
-    route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "publicb" {
-    subnet_id      = aws_subnet.publicb.id
-    route_table_id = aws_route_table.public.id
-}
-
-
-
