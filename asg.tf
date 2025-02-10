@@ -1,4 +1,24 @@
-# Create Launch Template
+# This resource block defines an AWS Launch Template named "my_template".
+# The launch template is configured with the following parameters:
+# - name_prefix: Prefix for the launch template name.
+# - image_id: The ID of the AMI to use for the instances (replace with the latest Amazon Linux AMI).
+# - instance_type: The type of instance to launch (t2.micro in this case).
+# - key_name: The name of the key pair to use for SSH access (replace with your key pair name).
+#
+# The network_interfaces block configures the network settings:
+# - associate_public_ip_address: Associates a public IP address with the instance.
+# - security_groups: Specifies the security group to associate with the instance.
+#
+# The user_data block contains a base64-encoded script that runs on instance launch:
+# - Writes a message to /var/www/html/index.html.
+# - Installs and starts the Apache HTTP server.
+#
+# The tag_specifications block adds tags to the instances created from this launch template:
+# - resource_type: Specifies that the tags apply to instances.
+# - tags: A map of tags to apply (e.g., Name = "AutoScalingInstance").
+#
+# The lifecycle block ensures that the launch template is created before any existing one is destroyed:
+# - create_before_destroy: Ensures the new resource is created before the old one is destroyed.
 resource "aws_launch_template" "my_template" {
   name_prefix   = "my-template"
   image_id      = "ami-085ad6ae776d8f09c"  # Replace with latest Amazon Linux AMI
